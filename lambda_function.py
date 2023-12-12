@@ -40,3 +40,25 @@ def ask_question(transcript, question):
     
     return answer
 
+def lambda_handler(event, context):
+    # Extract the transcript and question from the request
+    transcript = event.get('transcript')
+    question = event.get('question')
+    
+    # If a transcript is provided, start the session and get the session ID
+    if transcript:
+        session_id = start_session(transcript)
+        # If a question is provided along with the transcript, get an answer
+        if question:
+            answer = ask_question(transcript, question)
+            return {
+                'statusCode': 200,
+                'body': json.dumps({'sessionId': session_id, 'answer': answer})
+            }
+        else:
+            # If no question is provided, just return the session ID
+            return {
+                'statusCode': 200,
+                'body': json.dumps({'sessionId': session_id})
+            }
+
