@@ -1,6 +1,6 @@
 # Lambda Transcript Processor v1.2
 
-The Lambda Transcript Processor is a sophisticated AWS serverless application designed to seamlessly integrate YouTube video transcripts with the powerful language understanding capabilities of OpenAI's GPT models. This project allows users to start interactive sessions where they can query the transcript content in natural language, receiving contextually relevant responses.
+The Lambda Transcript Processor is a AWS serverless application designed to seamlessly integrate YouTube video transcripts with the powerful language understanding capabilities of OpenAI's GPT models. This project allows users to start interactive sessions where they can query the transcript content in natural language, receiving contextually relevant responses.
 
 ## Features
 
