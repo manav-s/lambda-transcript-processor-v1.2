@@ -35,3 +35,8 @@ def ask_question(transcript, question):
         max_tokens=1024  # Adjust as needed
     )
 
+    # Extract the response text
+    answer = gpt_response.choices[0].text.strip()
+    
+    return answer
+
