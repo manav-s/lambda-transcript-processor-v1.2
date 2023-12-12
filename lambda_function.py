@@ -14,7 +14,7 @@ openai.api_key = os.environ['OPENAPI_KEY']
 def start_session(transcript):
     # Generate a unique session ID
     session_id = str(uuid.uuid4())
-
+    
     # Store the session data in DynamoDB
     table.put_item(Item={
         'SessionId': session_id,
@@ -34,7 +34,7 @@ def ask_question(transcript, question):
         prompt=prompt,
         max_tokens=1024  # Adjust as needed
     )
-
+    
     # Extract the response text
     answer = gpt_response.choices[0].text.strip()
     
@@ -61,4 +61,25 @@ def lambda_handler(event, context):
                 'statusCode': 200,
                 'body': json.dumps({'sessionId': session_id})
             }
-
+    # If only a question is provided, fetch the transcript from the session and return an answer
+    elif question and 'sessionId' in event:
+        session_id = event['sessionId']
+        # Retrieve the session data from DynamoDB
+        response = table.get_item(Key={'SessionId': session_id})
+        if 'Item' in response:
+            session_data = response['Item']
+            answer = ask_question(session_data['Transcript'], question)
+            return {
+                'statusCode': 200,
+                'body': json.dumps({'answer': answer})
+            }
+        else:
+            return {
+                'statusCode': 404,
+                'body': json.dumps({'error': 'Session not found'})
+            }
+    else:
+        return {
+            'statusCode': 400,
+            'body': json.dumps({'error': 'No transcript or question provided'})
+        }
