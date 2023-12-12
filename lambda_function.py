@@ -23,3 +23,15 @@ def start_session(transcript):
     })
     
     return session_id
+
+def ask_question(transcript, question):
+    # Combine the transcript and the question to form the prompt
+    prompt = f"{transcript}\n\n{question}"
+    
+    # Send the prompt to OpenAI's GPT-3.5-turbo-1106 model
+    gpt_response = openai.Completion.create(
+        engine="text-davinci-003",  # Replace with your chosen model
+        prompt=prompt,
+        max_tokens=1024  # Adjust as needed
+    )
+
