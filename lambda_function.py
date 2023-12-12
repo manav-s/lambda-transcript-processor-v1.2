@@ -14,5 +14,12 @@ openai.api_key = os.environ['OPENAPI_KEY']
 def start_session(transcript):
     # Generate a unique session ID
     session_id = str(uuid.uuid4())
+
+    # Store the session data in DynamoDB
+    table.put_item(Item={
+        'SessionId': session_id,
+        'Transcript': transcript,
+        'Context': ''  # Placeholder for any initial context if needed
+    })
     
     return session_id
